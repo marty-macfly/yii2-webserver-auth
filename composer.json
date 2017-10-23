@@ -6,6 +6,7 @@
     "yii2"
   ],
   "homepage": "https://github.com/Marty-Macfly/yii2-nginx-auth",
+  "minimum-stability": "stable",
   "require": {
     "yiisoft/yii2": "~2.0.5"
   },
@@ -21,5 +22,7 @@
       "macfly\\nginxauth\\": "src/"
     }
   },
-  "minimum-stability": "stable"
+  	"extra": {
+  		"bootstrap": "macfly\\nginxauth\\Bootstrap"
+  }
 }
