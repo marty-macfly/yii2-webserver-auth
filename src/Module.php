@@ -15,6 +15,6 @@ class Module extends \yii\base\Module
 
     /** @var array The rules to be used in URL management. */
     public $urlRules = [
-			'<controller:\w+>/<action:\w+>/<method:\w+>'  => '<controller>/<action>',
+            '<controller:\w+>/<action:\w+>/<method:\w+>'  => '<controller>/<action>',
     ];
 }
