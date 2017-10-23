@@ -6,8 +6,8 @@ use Yii;
 
 class NginxController extends \yii\rest\Controller
 {
-    public function actionAuth($method)
+    public function actionAuth()
     {
-			return '';
+        return 'ok';
     }
 }
