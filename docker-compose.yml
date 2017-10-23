@@ -1,0 +1,16 @@
+version: '2'
+services:
+  nginx:
+    build: nginx
+    ports:
+     - "8888:80"
+    environment:
+      TERM:
+    depends_on:
+      - yii
+  yii:
+    build: yii
+    ports:
+     - "8080:8080"
+    environment:
+      TERM:
