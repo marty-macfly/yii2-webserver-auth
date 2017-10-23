@@ -17,6 +17,7 @@ Thumbs.db
 
 # composer itself is not needed
 composer.phar
+composer.lock
 
 # Custom config for docker-compose
 docker-compose.override.yml
