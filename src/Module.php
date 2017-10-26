@@ -3,6 +3,7 @@
 namespace macfly\nginxauth;
 
 use Yii;
+use yii\web\Response;
 
 class Module extends \yii\base\Module
 {
