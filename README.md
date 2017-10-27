@@ -12,6 +12,32 @@ Nginx server installed and configured with ngx_http_auth_request_module
 * https://developers.shopware.com/blog/2015/03/02/sso-with-nginx-authrequest-module/
 * http://nginx.org/en/docs/http/ngx_http_auth_request_module.html
 
+# installation/
+
+Through Composer
+From console:
+```
+composer require macfly/yii2-nginx-auth
+```
+or add to "require" section to composer.json
+```
+"macfly/yii2-nginx-auth": "*"
+```
+
+# config/
+
+Configure **config/web.php** as follows
+
+```php
+  'modules' => [
+     ................
+    'nginx'  => [
+      'class' => 'macfly\nginxauth\Module',
+    ],
+    ................
+  ],
+```
+
 # src/
 
 Source of yii2-nginx-auth module
