@@ -38,6 +38,17 @@ Configure **config/web.php** as follows
   ],
 ```
 
+To set the token on cookie **config/web.php** as follows
+
+```php
+  'user' => [
+     ................
+     'on afterLogin' => ['macfly\nginxauth\events\NginxAuthEvent', 'setTokenOnCookie'],
+     'on afterLogout' => ['macfly\nginxauth\events\NginxAuthEvent', 'unsetTokenOnCookie'],
+     ................
+   ],
+```
+
 # src/
 
 Source of yii2-nginx-auth module
