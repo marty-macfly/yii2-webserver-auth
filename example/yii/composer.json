@@ -12,12 +12,6 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Marty-Macfly/yii2-nginx-auth.git"
-        }
-    ],
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.4.0",
