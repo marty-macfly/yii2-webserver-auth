@@ -8,9 +8,7 @@ class AuthController extends \yii\rest\Controller
 {
     public function actionIndex()
     {
-        $token          = null;
-        $contentType    = array_shift(array_keys(Yii::$app->request->acceptableContentTypes));
-        $isBrowser      = in_array($contentType, ['text/html', 'application/xhtml+xml']);
+        $token = null;
 
         if (Yii::$app->user->enableAutoLogin && ($token = Yii::$app->request->cookies->getValue(Yii::$app->user->identityCookie)) !== null) {
             // Check if cookie-based login is use and identityCookie exist
@@ -24,17 +22,23 @@ class AuthController extends \yii\rest\Controller
         }
 
         if ($token !== null) {
-            if (Yii::$app->user->loginByAccessToken($token)) {
-                return Yii::$app->response->statusCode = 200;
+            if (Yii::$app->user->loginByAccessToken($token) !== null) { // Check if user is valid
+                // Check if the user has one of the permissions provided
+                if (Yii::$app->user->getAccessChecker() !== null && ($permissions = Yii::$app->request->get('permission')) !== null) {
+                    $permissions = is_array($permissions) ? $permissions : [$permissions];
+                    foreach ($permissions as $permission) {
+                        if (Yii::$app->user->can($permission)) {
+                            return Yii::$app->response->statusCode = 200;
+                        }
+                    }
+                    throw new \yii\web\ForbiddenHttpException;
+                } else {
+                    return Yii::$app->response->statusCode = 200;
+                }
             }
         }
 
-        if ($isBrowser) {
-            // Return 401 if it's a browser doing the request, so nginx can behave differently (redirect browser)
-            throw new \yii\web\UnauthorizedHttpException;
-        } else {
-            // Return 403, if it's a cli or a bot, nginx can behave differently display message about missing token
-            throw new \yii\web\ForbiddenHttpException;
-        }
+        // User is not valid
+        throw new \yii\web\UnauthorizedHttpException;
     }
 }

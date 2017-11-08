@@ -8,7 +8,7 @@
     "homepage": "https://github.com/Marty-Macfly/yii2-nginx-auth",
     "minimum-stability": "stable",
     "require": {
-        "yiisoft/yii2": "~2.0.5"
+        "yiisoft/yii2": "~2.0.9"
     },
     "license": "BSD-3-Clause",
     "authors": [
