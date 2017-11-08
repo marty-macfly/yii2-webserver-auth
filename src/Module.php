@@ -7,6 +7,8 @@ use yii\web\Response;
 
 class Module extends \yii\base\Module
 {
+    public $cookie_token_name = 'x-sso-token';
+
     public function init()
     {
         parent::init();
