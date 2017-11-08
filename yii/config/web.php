@@ -18,8 +18,6 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
-            'on afterLogin' => ['macfly\nginxauth\events\NginxAuthEvent', 'setTokenOnCookie'],
-            'on afterLogout' => ['macfly\nginxauth\events\NginxAuthEvent', 'unsetTokenOnCookie'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
