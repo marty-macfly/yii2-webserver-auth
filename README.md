@@ -60,7 +60,12 @@ server {
     location @error401 {
         # If request is made from a browser redirect to the login page of our Yii site
         if ($http_accept ~* "(text/html)|(application/xhtml+xml)") {
-            return 302 http://yii.website.com/site/login;
+            # If you want the user to come back here after successful login add
+            # the following query string "?return_url=http://www.website.com"
+            return 302 http://yii.website.com/site/login?return_url=${scheme}://${http_host}${request_uri};
+            # If you don't want the user to be redirect back just remove
+            # the query string
+            # return 302 http://yii.website.com/site/login;
         }
 
         # If request is made from a cli or a robot display a simple message
