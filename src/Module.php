@@ -3,21 +3,23 @@
 namespace macfly\nginxauth;
 
 use Yii;
-use yii\web\Response;
+use yii\helpers\ArrayHelper;
 
 class Module extends \yii\base\Module
 {
-    public $cookie_token_name = 'x-sso-token';
+    public $cookie_token_name   = 'x-sso-token';
+    public $return_url          = 'return_url';
 
-    public function init()
+    public static function getMe($app)
     {
-        parent::init();
-
-        if (Yii::$app->has('user')) {
-            Yii::$app->user->enableSession = false;
+        foreach ($app->getModules() as $id => $mod) {
+            if (is_array($mod) && (ArrayHelper::getValue($mod, 'class') == self::className() || ArrayHelper::getValue($mod, 0) == self::className())) {
+                return $app->getModule($id);
+            } elseif (is_object($mod) && is_a($mod, self::className())) {
+                return $mod;
+            }
         }
 
-        // Default reply format is json
-        Yii::$app->response->format = Response::FORMAT_JSON;
+        return null;
     }
 }

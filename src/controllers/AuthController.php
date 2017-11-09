@@ -7,6 +7,15 @@ use yii\helpers\ArrayHelper;
 
 class AuthController extends \yii\rest\Controller
 {
+    public function init()
+    {
+        parent::init();
+
+        if (Yii::$app->has('user')) {
+            Yii::$app->user->enableSession = false;
+        }
+    }
+
     public function actionIndex()
     {
         $user = Yii::$app->user;
