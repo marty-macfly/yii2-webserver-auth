@@ -32,7 +32,7 @@ class AuthEvent
 
         Yii::$app->response->cookies->add(new \yii\web\Cookie([
             'name' => $module->cookie_token_name,
-            'value' => Yii::$app->user->identity->accessToken,
+            'value' => Yii::$app->user->identity->getAuthKey(),
         ]));
     }
 
