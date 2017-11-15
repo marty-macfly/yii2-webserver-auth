@@ -19,21 +19,9 @@ class AuthController extends \yii\rest\Controller
     public function actionIndex()
     {
         $user = Yii::$app->user;
+
         if ($user->isGuest) { // User has not been authenticated yet
-            $token = null;
-
-            if ($user->enableAutoLogin && ($token = Yii::$app->request->cookies->getValue(ArrayHelper::getValue($user->identityCookie, 'name', '_identity'))) !== null) {
-                // Check if cookie-based login is use and identityCookie exist
-                Yii::info(sprintf("Cookie name '%s' found", $user->identityCookie));
-            } elseif (($token = Yii::$app->request->cookies->getValue($this->module->cookie_token_name)) !== null) {
-                // Check if our own cookie exist
-                Yii::info(sprintf("Cookie name '%s' found", $this->module->cookie_token_name));
-            } elseif (($token = Yii::$app->request->headers->get('x-sso-token')) !== null) {
-                // Check if the header exist
-                Yii::info(sprintf("Header name '%s' found", $this->module->cookie_token_name));
-            }
-
-            if ($token !== null) {
+            if (($token = Yii::$app->controller->module->getToken()) !== null) {
                 $user->loginByAccessToken($token);
             }
         }

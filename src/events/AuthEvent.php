@@ -11,9 +11,21 @@ class AuthEvent
     public static function setTokenCookie($event)
     {
         if (($module = Module::getMe(Yii::$app)) !== null) {
+            if (Module::getToken() !== null) {
+                Yii::info('Token already set');
+                return;
+            }
+
+            # Get main domain to set cookie
+            $domain = Yii::$app->request->getHostName();
+            if (($ldot = strrpos($domain, '.')) !== false && ($sdot = strrpos($domain, '.', -1 * (strlen($domain) - $ldot + 1))) !== false) {
+                $domain = substr($domain, $sdot + 1);
+            }
+
             Yii::$app->response->cookies->add(new \yii\web\Cookie([
-                'name' => $module->cookie_token_name,
-                'value' => Yii::$app->user->identity->getAuthKey(),
+                'domain' => $domain,
+                'name'   => $module->cookie_token_name,
+                'value'  => Yii::$app->user->identity->getAuthKey(),
             ]));
         } else {
             Yii::error('Module macfly\nginxauth\Module not loaded');
