@@ -26,7 +26,7 @@ class AuthController extends \yii\rest\Controller
             }
         }
 
-        if ($user->isGuest == false) {
+        if ($user->isGuest === false) {
             // Check if the user has one of the permissions provided
             if (($permissions = Yii::$app->request->get('permission')) !== null
                 && (($user->hasProperty('authManager') && $user->authManager !== null)

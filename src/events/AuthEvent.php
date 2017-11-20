@@ -43,4 +43,14 @@ class AuthEvent
     {
         self::sendCookie('deleted', time() - 86400);
     }
+
+    public static function redirectAfterLogin()
+    {
+        if (($module = Module::getMe(Yii::$app)) !== null) {
+            if ($module->return_url !== null && ($url = Yii::$app->request->get($module->return_url)) !== null) {
+                Yii::trace(sprintf("Parameter '%s' found after login user will be redirect to '%s'", $module->return_url, $url));
+                $user->setReturnUrl($url);
+            }
+        }
+    }
 }
