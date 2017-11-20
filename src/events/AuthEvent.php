@@ -23,7 +23,7 @@ class AuthEvent
                 'value'  => $value,
                 'expire' => $expire,
             ]));
-            Yii::info(sprintf("Set cookie to domain: '%s', name: '%s', value: '%s', expire: ''%s'", $domain, $name, $value, $expire));
+            Yii::info(sprintf("Set cookie to domain: '%s', name: '%s', value: '%s', expire: ''%s'", $domain, $module->cookie_token_name, $value, $expire));
         } else {
             Yii::error('Module macfly\nginxauth\Module not loaded');
         }
