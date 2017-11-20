@@ -36,11 +36,11 @@ class AuthEvent
             return;
         }
 
-        self::sendCookie(Yii::$app->user->identity->getAuthKey(Yii::$app->user->identity->getAuthKey()));
+        self::sendCookie(Yii::$app->user->identity->getAuthKey());
     }
 
     public static function unsetTokenCookie($event)
     {
-        self::sendCookie(Yii::$app->user->identity->getAuthKey('deleted', time() - 86400));
+        self::sendCookie('deleted', time() - 86400);
     }
 }
