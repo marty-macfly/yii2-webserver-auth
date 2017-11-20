@@ -36,7 +36,7 @@ class AuthEvent
             return;
         }
 
-        if (Yii::$app->user->isGuest === false) {
+        if (Yii::$app->user->isGuest) {
             Yii::info('User not logged in');
             return;
         }
