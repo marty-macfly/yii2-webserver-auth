@@ -26,7 +26,7 @@ class Module extends \yii\base\Module
     public static function getToken()
     {
         $cookie_token_name = ArrayHelper::getValue(self::getMe(Yii::$app), 'cookie_token_name');
-        
+
         if ($cookie_token_name === null) {
             return null;
         }

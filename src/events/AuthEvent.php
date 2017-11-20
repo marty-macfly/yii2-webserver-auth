@@ -8,14 +8,9 @@ use macfly\nginxauth\Module;
 
 class AuthEvent
 {
-    public static function setTokenCookie($event)
+    public static function sendCookie($value, $expire = 0)
     {
         if (($module = Module::getMe(Yii::$app)) !== null) {
-            if (Module::getToken() !== null) {
-                Yii::info('Token already set');
-                return;
-            }
-
             # Get main domain to set cookie
             $domain = Yii::$app->request->getHostName();
             if (($ldot = strrpos($domain, '.')) !== false && ($sdot = strrpos($domain, '.', -1 * (strlen($domain) - $ldot + 1))) !== false) {
@@ -25,19 +20,27 @@ class AuthEvent
             Yii::$app->response->cookies->add(new \yii\web\Cookie([
                 'domain' => $domain,
                 'name'   => $module->cookie_token_name,
-                'value'  => Yii::$app->user->identity->getAuthKey(),
+                'value'  => $value,
+                'expire' => $expire,
             ]));
+            Yii::info(sprintf("Set cookie to domain: '%s', name: '%s', value: '%s', expire: ''%s'", $domain, $name, $value, $expire));
         } else {
             Yii::error('Module macfly\nginxauth\Module not loaded');
         }
     }
 
+    public static function setTokenCookie($event)
+    {
+        if (Module::getToken() !== null) {
+            Yii::info('Token already set');
+            return;
+        }
+
+        self::sendCookie(Yii::$app->user->identity->getAuthKey(Yii::$app->user->identity->getAuthKey()));
+    }
+
     public static function unsetTokenCookie($event)
     {
-        if (($module = Module::getMe(Yii::$app)) !== null) {
-            Yii::$app->response->cookies->remove($module->cookie_token_name);
-        } else {
-            Yii::error('Module macfly\nginxauth\Module not loaded');
-        }
+        self::sendCookie(Yii::$app->user->identity->getAuthKey('deleted', time() - 86400));
     }
 }
