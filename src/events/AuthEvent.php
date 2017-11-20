@@ -36,6 +36,11 @@ class AuthEvent
             return;
         }
 
+        if (Yii::$app->user->isGuest === false) {
+            Yii::info('User not logged in');
+            return;
+        }
+
         self::sendCookie(Yii::$app->user->identity->getAuthKey());
     }
 
@@ -47,6 +52,8 @@ class AuthEvent
     public static function redirectAfterLogin()
     {
         if (($module = Module::getMe(Yii::$app)) !== null) {
+            AuthEvent::setTokenCookie(null);
+
             if ($module->return_url !== null && ($url = Yii::$app->request->get($module->return_url)) !== null) {
                 Yii::trace(sprintf("Parameter '%s' found after login user will be redirect to '%s'", $module->return_url, $url));
                 Yii::$app->user->setReturnUrl($url);

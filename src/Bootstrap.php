@@ -17,9 +17,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
             $user->on($user::EVENT_AFTER_LOGIN, ['macfly\nginxauth\events\AuthEvent', 'redirectAfterLogin']);
             $user->on($user::EVENT_AFTER_LOGOUT, ['macfly\nginxauth\events\AuthEvent', 'unsetTokenCookie']);
 
-            if (Yii::$app->user->isGuest === false) {
-                AuthEvent::setTokenCookie(null);
-            }
+            AuthEvent::setTokenCookie(null);
         }
     }
 }
