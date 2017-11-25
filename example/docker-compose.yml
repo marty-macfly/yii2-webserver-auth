@@ -8,6 +8,14 @@ services:
       TERM:
     depends_on:
       - yii
+  httpd:
+    build: httpd
+    ports:
+     - "8889:80"
+    environment:
+      TERM:
+    depends_on:
+      - yii
   yii:
     build: yii
     ports:
