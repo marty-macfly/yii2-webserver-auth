@@ -2,9 +2,7 @@
     "name": "macfly/yii2-nginx-auth",
     "description": "Module for Yii framwork to enable Nginx authentification",
     "type": "yii2-extension",
-    "keywords": [
-        "yii2"
-    ],
+    "keywords": ["yii2", "nginx", "apache", "httpd", "htaccess"],
     "homepage": "https://github.com/Marty-Macfly/yii2-nginx-auth",
     "minimum-stability": "stable",
     "require": {
