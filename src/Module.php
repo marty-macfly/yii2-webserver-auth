@@ -7,8 +7,8 @@ use yii\helpers\ArrayHelper;
 
 class Module extends \yii\base\Module
 {
-    public $cookie_token_name   = 'x-sso-token';
-    public $return_url          = 'return_url';
+    public $token_name   = 'x-sso-token';
+    public $return_url   = 'return_url';
 
     public static function getMe($app)
     {
@@ -25,9 +25,9 @@ class Module extends \yii\base\Module
 
     public static function getToken()
     {
-        $cookie_token_name = ArrayHelper::getValue(self::getMe(Yii::$app), 'cookie_token_name');
+        $token_name = ArrayHelper::getValue(self::getMe(Yii::$app), 'token_name');
 
-        if ($cookie_token_name === null) {
+        if ($token_name === null) {
             return null;
         }
 
@@ -37,12 +37,18 @@ class Module extends \yii\base\Module
         if ($user->enableAutoLogin && ($token = Yii::$app->request->cookies->getValue(ArrayHelper::getValue($user->identityCookie, 'name', '_identity'))) !== null) {
             // Check if cookie-based login is use and identityCookie exist
             Yii::info(sprintf("Cookie name '%s' found", $user->identityCookie));
-        } elseif (($token = Yii::$app->request->cookies->getValue($cookie_token_name)) !== null) {
+        } elseif (($token = Yii::$app->request->cookies->getValue($token_name)) !== null) {
             // Check if our own cookie exist
-            Yii::info(sprintf("Cookie name '%s' found", $cookie_token_name));
+            Yii::info(sprintf("Cookie name '%s' found", $token_name));
         } elseif (($token = Yii::$app->request->headers->get('x-sso-token')) !== null) {
             // Check if the header exist
-            Yii::info(sprintf("Header name '%s' found", $cookie_token_name));
+            Yii::info(sprintf("Header name '%s' found", $token_name));
+        } elseif (($user = Yii::$app->request->getAuthUser()) === $token_name) {
+            Yii::info(sprintf("Header name 'Authorization' found token in password"));
+            $token = Yii::$app->request->getAuthPassword();
+        } elseif (($password = Yii::$app->request->getAuthPassword()) === $token_name) {
+            Yii::info(sprintf("Header name 'Authorization' found token in user"));
+            $token = Yii::$app->request->getAuthUser();
         }
 
         return $token;

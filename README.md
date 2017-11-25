@@ -33,7 +33,7 @@ Configure **config/web.php** as follows
      ................
     'nginx'  => [
       'class' => 'macfly\nginxauth\Module',
-      // 'cookie_token_name' => 'mycookie', // You can change the name of the cookie/header in which the authentication token will be set/get
+      // 'token_name' => 'mycookie', // You can change the name of the cookie/header in which the authentication token will be set/get
     ],
     ................
   ],
@@ -112,11 +112,11 @@ Usage
 
 # From a browser
 
-When you will go to http://www.website.com, if you don't have the cookie defined by `cookie_token_name` (default: x-sso-token) or the [`identityCookie`](http://www.yiiframework.com/doc-2.0/yii-web-user.html#$identityCookie-detail), you browser will be redirect to http://yii.website.com/site/login. After login you can go again to http://www.website.com and you will get acces to site (if your user has got the right permission).
+When you will go to http://www.website.com, if you don't have the cookie defined by `token_name` (default: x-sso-token) or the [`identityCookie`](http://www.yiiframework.com/doc-2.0/yii-web-user.html#$identityCookie-detail), you browser will be redirect to http://yii.website.com/site/login. After login you can go again to http://www.website.com and you will get acces to site (if your user has got the right permission).
 
 # From a cli
 
-You can also do authentication with cli tool, like `wget` or `curl`, in that case you will perhaps more use a header instead of a cookie. So you just need to specify the token in a header name defined by `cookie_token_name` (default: x-sso-token)
+You can also do authentication with cli tool, like `wget` or `curl`, in that case you will perhaps more use a header instead of a cookie. So you just need to specify the token in a header name defined by `token_name` (default: x-sso-token)
 
 
 Example
