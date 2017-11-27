@@ -3,6 +3,7 @@
 namespace macfly\nginxauth\events;
 
 use Yii;
+use yii\validators\IpValidator;
 
 use macfly\nginxauth\Module;
 
@@ -13,7 +14,8 @@ class AuthEvent
         if (($module = Module::getMe(Yii::$app)) !== null) {
             # Get main domain to set cookie
             $domain = Yii::$app->request->getHostName();
-            if (($ldot = strrpos($domain, '.')) !== false && ($sdot = strrpos($domain, '.', -1 * (strlen($domain) - $ldot + 1))) !== false) {
+            $validator = new IpValidator();
+            if (!$validator->validate($domain) && ($ldot = strrpos($domain, '.')) !== false && ($sdot = strrpos($domain, '.', -1 * (strlen($domain) - $ldot + 1))) !== false) {
                 $domain = substr($domain, $sdot + 1);
             }
 
