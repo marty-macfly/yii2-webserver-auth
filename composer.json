@@ -21,7 +21,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "macfly\\yii\\webserver": "src/"
+            "macfly\\yii\\webserver\\": "src/"
         }
     },
     "extra": {
