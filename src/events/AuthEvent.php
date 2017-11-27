@@ -1,6 +1,6 @@
 <?php
 
-namespace macfly\nginxauth\events;
+namespace macfly\yii\webserver\events;
 
 use Yii;
 use yii\validators\IpValidator;

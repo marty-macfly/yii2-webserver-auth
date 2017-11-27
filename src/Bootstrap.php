@@ -1,6 +1,6 @@
 <?php
 
-namespace macfly\nginxauth;
+namespace macfly\yii\webserver;
 
 use Yii;
 use yii\web\Application as WebApplication;
@@ -14,8 +14,8 @@ class Bootstrap implements \yii\base\BootstrapInterface
     {
         if ($app instanceof WebApplication && $app->has('user')) {
             $user = $app->getUser();
-            $user->on($user::EVENT_AFTER_LOGIN, ['macfly\nginxauth\events\AuthEvent', 'redirectAfterLogin']);
-            $user->on($user::EVENT_AFTER_LOGOUT, ['macfly\nginxauth\events\AuthEvent', 'unsetTokenCookie']);
+            $user->on($user::EVENT_AFTER_LOGIN, ['macfly\yii\webserver\events\AuthEvent', 'redirectAfterLogin']);
+            $user->on($user::EVENT_AFTER_LOGOUT, ['macfly\yii\webserver\events\AuthEvent', 'unsetTokenCookie']);
 
             AuthEvent::setTokenCookie(null);
         }

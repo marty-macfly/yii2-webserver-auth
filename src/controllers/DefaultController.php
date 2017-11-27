@@ -1,6 +1,6 @@
 <?php
 
-namespace macfly\nginxauth\controllers;
+namespace macfly\yii\webserver\controllers;
 
 use Yii;
 use yii\web\Response;
@@ -16,11 +16,11 @@ class DefaultController extends \yii\rest\Controller
             Yii::$app->user->enableSession = false;
         }
 
-	Yii::$app->response->format = Response::FORMAT_JSON;
+        Yii::$app->response->format = Response::FORMAT_JSON;
     }
 
     public function actionIndex()
     {
-	throw new MethodNotAllowedHttpException();
+        throw new MethodNotAllowedHttpException();
     }
 }

@@ -1,4 +1,4 @@
-# yii2-nginx-auth
+# yii2-webserver-auth
 
 The module allow you to restrict access to any website behind an nginx server. The authentication will be done by your Yii site and your Yii site can be use has an SSO.
 
@@ -12,13 +12,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist "macfly/yii2-nginx-auth" "*"
+php composer.phar require --prefer-dist "macfly/yii2-webserver-auth" "*"
 ```
 
 or add
 
 ```
-"macfly/yii2-nginx-auth": "*"
+"macfly/yii2-webserver-auth": "*"
 ```
 
 to the require section of your `composer.json` file.
@@ -31,15 +31,15 @@ Configure **config/web.php** as follows
 ```php
   'modules' => [
      ................
-    'nginx'  => [
-      'class' => 'macfly\nginxauth\Module',
-      // 'token_name' => 'mycookie', // You can change the name of the cookie/header in which the authentication token will be set/get
+    'htaccess'  => [
+      'class' => 'macfly\yii\webserver\Module',
+      // 'token_name' => 'mycookie', // You can change the name of the login/cookie/header in which the authentication token will be set/get
     ],
     ................
   ],
 ```
 
-The module bootstrap will attached on `user` component handler `macfly\nginxauth\events\NginxAuthEvent->setTokenCookie` on  `afterLogin` and `macfly\nginxauth\events\NginxAuthEvent->unsetTokenCookie` on  `afterLogout`.
+The module bootstrap will attached on `user` component handler `macfly\yii\webserver\events\NginxAuthEvent->setTokenCookie` on  `afterLogin` and `macfly\yii\webserver\events\NginxAuthEvent->unsetTokenCookie` on  `afterLogout`.
 
 You need to update the configuration of your Nginx for the site you want to restrict be adding the following elements :
 

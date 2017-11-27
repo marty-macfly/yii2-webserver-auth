@@ -1,6 +1,6 @@
 <?php
 
-namespace macfly\nginxauth;
+namespace macfly\yii\webserver;
 
 use Yii;
 use yii\helpers\ArrayHelper;
