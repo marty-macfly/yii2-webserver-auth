@@ -34,10 +34,7 @@ class Module extends \yii\base\Module
         $user  = Yii::$app->user;
         $token = null;
 
-        if ($user->enableAutoLogin && ($token = Yii::$app->request->cookies->getValue(ArrayHelper::getValue($user->identityCookie, 'name', '_identity'))) !== null) {
-            // Check if cookie-based login is use and identityCookie exist
-            Yii::info(sprintf("Cookie name '%s' found", $user->identityCookie));
-        } elseif (($token = Yii::$app->request->cookies->getValue($token_name)) !== null) {
+        if (($token = Yii::$app->request->cookies->getValue($token_name)) !== null) {
             // Check if our own cookie exist
             Yii::info(sprintf("Cookie name '%s' found", $token_name));
         } elseif (($token = Yii::$app->request->headers->get('x-sso-token')) !== null) {
