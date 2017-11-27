@@ -50,8 +50,8 @@ $config = [
         ],
     ],
     'modules' => [
-        'nginx'  => [
-            'class' => 'macfly\nginxauth\Module',
+        'htaccess'  => [
+            'class' => 'macfly\yii\webserver\Module',
         ],
     ],
     'params' => $params,
