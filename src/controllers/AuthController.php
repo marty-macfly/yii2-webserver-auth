@@ -7,22 +7,13 @@ use yii\helpers\ArrayHelper;
 
 class AuthController extends \yii\rest\Controller
 {
-    public function init()
-    {
-        parent::init();
-
-        if (Yii::$app->has('user')) {
-            Yii::$app->user->enableSession = false;
-        }
-    }
-
     public function actionIndex()
     {
         $user = Yii::$app->user;
 
         if ($user->isGuest) { // User has not been authenticated yet
-            if (($token = Yii::$app->controller->module->getToken()) !== null) {
-                $user->loginByAccessToken($token);
+            if (($token = Yii::$app->controller->module->getToken()) !== null && $user->loginByAccessToken($token) === null) {
+                Yii::error(sprintf("Failed to loginByAccessToken with token: %s", $token));
             }
         }
 
@@ -31,9 +22,9 @@ class AuthController extends \yii\rest\Controller
             if (($permissions = Yii::$app->request->get('permission')) !== null
                 && !empty($permissions)
                 && (($user->hasProperty('authManager') && $user->authManager !== null)
+                $permissions = is_array($permissions) ? $permissions : [$permissions];
                     || ($user->hasProperty('accessChecker') && $user->accessChecker !== null))
                 ) {
-                $permissions = is_array($permissions) ? $permissions : [$permissions];
                 foreach ($permissions as $permission) {
                     if ($user->can($permission)) {
                         return Yii::$app->response->statusCode = 200;
