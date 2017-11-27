@@ -48,6 +48,8 @@ class Module extends \yii\base\Module
             $token = Yii::$app->request->getAuthUser();
         }
 
+        Yii::trace(sprintf("Token value: %s", $token));
+
         return $token;
     }
 }
