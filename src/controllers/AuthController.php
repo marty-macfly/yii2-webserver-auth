@@ -22,9 +22,9 @@ class AuthController extends \yii\rest\Controller
             if (($permissions = Yii::$app->request->get('permission')) !== null
                 && !empty($permissions)
                 && (($user->hasProperty('authManager') && $user->authManager !== null)
-                $permissions = is_array($permissions) ? $permissions : [$permissions];
                     || ($user->hasProperty('accessChecker') && $user->accessChecker !== null))
                 ) {
+                $permissions = is_array($permissions) ? $permissions : [$permissions];
                 foreach ($permissions as $permission) {
                     if ($user->can($permission)) {
                         return Yii::$app->response->statusCode = 200;
