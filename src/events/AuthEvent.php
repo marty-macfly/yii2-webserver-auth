@@ -5,7 +5,7 @@ namespace macfly\yii\webserver\events;
 use Yii;
 use yii\validators\IpValidator;
 
-use macfly\nginxauth\Module;
+use macfly\yii\webserver\Module;
 
 class AuthEvent
 {
@@ -27,7 +27,7 @@ class AuthEvent
             ]));
             Yii::info(sprintf("Set cookie to domain: '%s', name: '%s', value: '%s', expire: ''%s'", $domain, $module->token_name, $value, $expire));
         } else {
-            Yii::error('Module macfly\nginxauth\Module not loaded');
+            Yii::error('Module macfly\yii\webserver\Module not loaded');
         }
     }
 

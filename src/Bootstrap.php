@@ -5,7 +5,7 @@ namespace macfly\yii\webserver;
 use Yii;
 use yii\web\Application as WebApplication;
 
-use macfly\nginxauth\events\AuthEvent;
+use macfly\yii\webserver\events\AuthEvent;
 
 class Bootstrap implements \yii\base\BootstrapInterface
 {
