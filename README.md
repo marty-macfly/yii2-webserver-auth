@@ -150,8 +150,101 @@ When you will go to http://www.website.com, if you don't have the cookie defined
 
 # From a cli
 
-You can also do authentication with cli tool, like `wget` or `curl`, in that case you will perhaps more use a header instead of a cookie. So you just need to specify the token in a header name defined by `token_name` (default: x-sso-token)
+You can also do authentication with cli tool, like `wget` or `curl`, in that case you can use two methods:
 
+* Provide the access token in the header, header name is defined by `token_name` (default: x-sso-token):
+
+```bash
+$ curl -s -i -X GET --header 'x-sso-token: 100-token' 'http://127.0.0.1:8888/user-sso/'
+HTTP/1.1 200 OK
+Server: nginx/1.10.3
+Date: Tue, 28 Nov 2017 05:33:01 GMT
+Content-Type: text/html
+Content-Length: 359
+Last-Modified: Mon, 27 Nov 2017 10:19:20 GMT
+Connection: keep-alive
+ETag: "5a1be6a8-167"
+Accept-Ranges: bytes
+
+<!DOCTYPE html>
+<html>%   
+<head>
+<title>Welcome to restricted section!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to restricted section!</h1>
+<p>You can see this page because you're a logged in user, sso was used.</p>
+</body>
+</html>
+```
+
+With an invalid token:
+
+```bash
+$ curl -s -i -X GET --header 'x-sso-token: bad-token' 'http://127.0.0.1:8888/user-sso/'
+HTTP/1.1 401 Unauthorized
+Server: nginx/1.10.3
+Date: Tue, 28 Nov 2017 05:35:18 GMT
+Content-Type: application/octet-stream
+Content-Length: 57
+Connection: keep-alive
+
+Unauthorized: You didn't provide the authentication token
+```
+
+If you don't have permission to access the location (only in sso mode, if you're testing with no-sso return code will be 401):
+
+```bash
+$ curl -s -i -X GET --header 'x-sso-token: 100-token' 'http://127.0.0.1:8888/permission-sso/'
+HTTP/1.1 403 Forbidden
+Server: nginx/1.10.3
+Date: Tue, 28 Nov 2017 05:36:01 GMT
+Content-Type: application/octet-stream
+Content-Length: 61
+Connection: keep-alive
+
+Forbidden: You don't have permissions to access that resource
+```
+
+* Provide the access token has a login/password, login should by `token_name` (default: x-sso-token) and password the access token (you can also invert user and password, if you do so the token will be log in your server log has the username)
+
+```bash
+$ curl -s -i -X GET 'http://x-sso-token:100-token@127.0.0.1:8888/user/'
+HTTP/1.1 200 OK
+Server: nginx/1.10.3
+Date: Tue, 28 Nov 2017 05:39:52 GMT
+Content-Type: text/html
+Content-Length: 359
+Last-Modified: Mon, 27 Nov 2017 10:19:20 GMT
+Connection: keep-alive
+ETag: "5a1be6a8-167"
+Accept-Ranges: bytes
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to restricted section!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to restricted section!</h1>
+<p>You can see this page because you're a logged in user, sso was used.</p>
+</body>
+</html>
+```
 
 ## Apache Httpd setup
 
@@ -200,3 +293,67 @@ You need to update the configuration of your Httpd server for the site you want 
 ```
 
 You'll find in the `example/httpd/` directory a more [advanced configuration](example/httpd/default.conf).
+
+# From a cli
+
+You can also do authentication with cli tool, like `wget` or `curl`, in that case you can use following method:
+
+* Provide the access token has a login/password, login should by `token_name` (default: x-sso-token) and password the access token (you can also invert user and password, if you do so the token will be log in your server log has the username)
+
+```bash
+$ curl -s -i -X GET 'http://x-sso-token:100-token@127.0.0.1:8889/user/'
+HTTP/1.1 200 OK
+Date: Tue, 28 Nov 2017 05:44:46 GMT
+Server: Apache/2.4.25 (Debian)
+Last-Modified: Mon, 27 Nov 2017 10:58:40 GMT
+ETag: "159-55ef4c8f3b800"
+Accept-Ranges: bytes
+Content-Length: 345
+Vary: Accept-Encoding
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to restricted section!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to restricted section!</h1>
+<p>You can see this page because you're a logged in user.</p>
+</body>
+</html>
+```
+
+With an invalid token:
+
+```bash
+$ curl -s -i -X GET --header 'x-sso-token: bad-token' 'http://127.0.0.1:8889/user/'
+HTTP/1.1 401 Unauthorized
+Date: Tue, 28 Nov 2017 05:45:27 GMT
+Server: Apache/2.4.25 (Debian)
+WWW-Authenticate: Basic realm="Authentication Required"
+Content-Length: 458
+Content-Type: text/html; charset=iso-8859-1
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>401 Unauthorized</title>
+</head><body>
+<h1>Unauthorized</h1>
+<p>This server could not verify that you
+are authorized to access the document
+requested.  Either you supplied the wrong
+credentials (e.g., bad password), or your
+browser doesn't understand how to supply
+the credentials required.</p>
+<hr>
+<address>Apache/2.4.25 (Debian) Server at 127.0.0.1 Port 8889</address>
+</body></html>
+```
