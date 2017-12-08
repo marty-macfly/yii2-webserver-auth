@@ -79,7 +79,6 @@ The module bootstrap will attached on `user` component handler `macfly\yii\webse
 
 ## Nginx setup
 
-
 Installation
 ------------
 
@@ -334,7 +333,7 @@ Content-Type: text/html
 With an invalid token:
 
 ```bash
-$ curl -s -i -X GET 'http://bad-token:127.0.0.1:8889/user/'
+$ curl -s -i -X GET 'http://bad-token:@127.0.0.1:8889/user/'
 HTTP/1.1 401 Unauthorized
 Date: Tue, 28 Nov 2017 05:45:27 GMT
 Server: Apache/2.4.25 (Debian)
