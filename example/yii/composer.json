@@ -18,7 +18,6 @@
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "macfly/yii2-filter-auth-cookie": "dev-master",
         "macfly/yii2-webserver-auth": "dev-master"
     },
     "require-dev": {
