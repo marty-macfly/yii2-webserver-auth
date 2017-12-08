@@ -7,8 +7,9 @@ use yii\helpers\ArrayHelper;
 
 class Module extends \yii\base\Module
 {
-    public $token_name   = 'x-sso-token';
-    public $return_url   = 'return_url';
+    public $token_name = 'x-sso-token';
+    public $return_url = 'return_url';
+    public $user_token = 'accessToken';
 
     public static function getMe($app)
     {

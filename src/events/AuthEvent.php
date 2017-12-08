@@ -50,7 +50,7 @@ class AuthEvent
             return;
         }
 
-        self::sendCookie(ArrayHelper::getValue(Yii::$app->user->identity, 'accessToken'));
+        self::sendCookie(ArrayHelper::getValue(Yii::$app->user->identity, $module->user_token));
     }
 
     public static function unsetTokenCookie($event)
