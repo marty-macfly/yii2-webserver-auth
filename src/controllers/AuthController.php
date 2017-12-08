@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
-use macfly\yii\webserver\auth\CookieAuth;
+use macfly\yii\filters\auth\CookieAuth;
 
 class AuthController extends \yii\rest\Controller
 {

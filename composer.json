@@ -6,7 +6,8 @@
     "homepage": "https://github.com/marty-macfly/yii2-webserver-auth",
     "minimum-stability": "stable",
     "require": {
-        "yiisoft/yii2": "~2.0.13"
+        "yiisoft/yii2": "~2.0.13",
+        "macfly/yii2-filter-auth-cookie": "dev-master",
     },
     "license": "BSD-3-Clause",
     "authors": [
