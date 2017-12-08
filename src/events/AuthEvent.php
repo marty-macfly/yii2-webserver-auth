@@ -41,7 +41,7 @@ class AuthEvent
 
         if (($token = Yii::$app->request->cookies->getValue($module->token_name)) !== null) {
             // Check if our own cookie exist
-            Yii::info(sprintf("Cookie name '%s' found", $token_name));
+            Yii::info(sprintf("Cookie name '%s' found", $module->token_name));
         }
 
         if (Yii::$app->user->isGuest) {
