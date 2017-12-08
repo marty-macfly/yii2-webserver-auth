@@ -3,6 +3,7 @@
 namespace macfly\yii\webserver\events;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\validators\IpValidator;
 
 use macfly\yii\webserver\Module;
@@ -33,9 +34,14 @@ class AuthEvent
 
     public static function setTokenCookie($event)
     {
-        if (Module::getToken() !== null) {
-            Yii::info('Token already set');
+        if (($module = Module::getMe(Yii::$app)) === null) {
+            Yii::error('Module macfly\yii\webserver\Module not loaded');
             return;
+        }
+
+        if (($token = Yii::$app->request->cookies->getValue($module->token_name)) !== null) {
+            // Check if our own cookie exist
+            Yii::info(sprintf("Cookie name '%s' found", $token_name));
         }
 
         if (Yii::$app->user->isGuest) {
@@ -43,7 +49,7 @@ class AuthEvent
             return;
         }
 
-        self::sendCookie(Yii::$app->user->identity->getAuthKey());
+        self::sendCookie(ArrayHelper::getValue(Yii::$app->user->identity, 'accessToken'));
     }
 
     public static function unsetTokenCookie($event)

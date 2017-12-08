@@ -22,34 +22,4 @@ class Module extends \yii\base\Module
 
         return null;
     }
-
-    public static function getToken()
-    {
-        $token_name = ArrayHelper::getValue(self::getMe(Yii::$app), 'token_name');
-
-        if ($token_name === null) {
-            return null;
-        }
-
-        $user  = Yii::$app->user;
-        $token = null;
-
-        if (($token = Yii::$app->request->cookies->getValue($token_name)) !== null) {
-            // Check if our own cookie exist
-            Yii::info(sprintf("Cookie name '%s' found", $token_name));
-        } elseif (($token = Yii::$app->request->headers->get('x-sso-token')) !== null) {
-            // Check if the header exist
-            Yii::info(sprintf("Header name '%s' found", $token_name));
-        } elseif (($user = Yii::$app->request->getAuthUser()) === $token_name) {
-            Yii::info(sprintf("Header name 'Authorization' found token in password"));
-            $token = Yii::$app->request->getAuthPassword();
-        } elseif (($password = Yii::$app->request->getAuthPassword()) === $token_name) {
-            Yii::info(sprintf("Header name 'Authorization' found token in user"));
-            $token = Yii::$app->request->getAuthUser();
-        }
-
-        Yii::trace(sprintf("Token value: %s", $token));
-
-        return $token;
-    }
 }

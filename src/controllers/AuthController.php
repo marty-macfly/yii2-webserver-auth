@@ -3,11 +3,11 @@
 namespace macfly\yii\webserver\controllers;
 
 use Yii;
-use yii\helpers\ArrayHelper;
-
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
+use yii\helpers\ArrayHelper;
+
 use macfly\yii\filters\auth\CookieAuth;
 
 class AuthController extends \yii\rest\Controller
@@ -18,18 +18,7 @@ class AuthController extends \yii\rest\Controller
         $behaviors['authenticator'] = [
             'class' => CompositeAuth::className(),
             'authMethods' => [
-                'basicAuth' => [
-                    'class' => HttpBasicAuth::className(),
-/*
-                    'auth' => function ($username, $password) {
-                        $user = User::find()->where(['username' => $username])->one();
-                        if ($user->verifyPassword($password)) {
-                            return $user;
-                        }
-                        return null;
-                    },
-*/
-                ],
+                HttpBasicAuth::className(),
                 HttpBearerAuth::className(),
                 'cookieAuth' => [
                     'class' => CookieAuth::className(),
@@ -44,13 +33,6 @@ class AuthController extends \yii\rest\Controller
     {
         $user = Yii::$app->user;
 
-/*
-        if ($user->isGuest) { // User has not been authenticated yet
-            if (($token = Yii::$app->controller->module->getToken()) !== null && $user->loginByAccessToken($token) === null) {
-                Yii::error(sprintf("Failed to loginByAccessToken with token: %s", $token));
-            }
-        }
-*/
         if ($user->isGuest === false) {
             // Check if the user has one of the permissions provided
             if (($permissions = Yii::$app->request->get('permission')) !== null
