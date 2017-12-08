@@ -2,10 +2,10 @@
 
 The module allow you to restrict access to any website behind an [Nginx](http://nginx.org/) or [Apache HTTPD](httpd.apache.org) server. With this module your Yii site is becoming your authentication and authorization provider as an LDAP or [htaccess file](httpd.apache.org/docs/current/howto/htaccess.html) can do.
 
-Some usefull usage:
+Some useful usage:
 - Shared login and password on multiple web-server (you don't need to update the htaccess every where to update a password), it's can be directly done on your Yii site.
-- If the site behind HTTPD or Nginx is not in HTTPS, authentication is based on access Token, if your token life is not too long it can be acceptable for a security purpose (it's always good to use ssl).
-- On nginx you've got the Single Sign-On feature, if you're already logged on your Yii website, you won't see any loging page (only work if all the sites are sharing the parent domain for cookie access).
+- If the site behind HTTPD or Nginx is not in HTTPS, authentication is based on access Token (by default), if your token life is not too long and random it can be acceptable for a security purpose (it's always good to use ssl).
+- On Nginx you've got the Single Sign-On feature, if you're already logged on your Yii website, you won't see any login page (only work if all the sites are sharing the parent domain for cookie access).
 - Permission management a same account can have different access to different web-site, can access to site1 and not to site2.
 
 ## Test
@@ -34,7 +34,7 @@ There is 2 users :
 * admin/admin => acess token: 100-token
 * demo/demo => acess token: 101-token
 
-The login and password is used only for SSO on nginx when you're redirect to http://127.0.0.1:8080/site/login.
+The login and password is used only for SSO on Nginx when you're redirect to http://127.0.0.1:8080/site/login.
 If you're directly prompt by your browser for login and password you should use login: `x-sso-token` (name define in the module configuration for `token_name`) and the access token has the password (for **admin** user **100-token**).
 
 ## Yii setup
@@ -152,10 +152,10 @@ When you will go to http://www.website.com, if you don't have the cookie defined
 
 You can also do authentication with cli tool, like `wget` or `curl`, in that case you can use two methods:
 
-* Provide the access token in the header, header name is defined by `token_name` (default: x-sso-token):
+* Provide the access token via HTTP [Bearer Tokens](http://tools.ietf.org/html/rfc6750):
 
 ```bash
-$ curl -s -i -X GET --header 'x-sso-token: 100-token' 'http://127.0.0.1:8888/user-sso/'
+$ curl -s -i -X GET --header 'Authorization: Bearer 100-token' 'http://127.0.0.1:8888/user-sso/'
 HTTP/1.1 200 OK
 Server: nginx/1.10.3
 Date: Tue, 28 Nov 2017 05:33:01 GMT
@@ -188,7 +188,7 @@ Accept-Ranges: bytes
 With an invalid token:
 
 ```bash
-$ curl -s -i -X GET --header 'x-sso-token: bad-token' 'http://127.0.0.1:8888/user-sso/'
+$ curl -s -i -X GET --header 'Authorization: Bearer bad-token' 'http://127.0.0.1:8888/user-sso/'
 HTTP/1.1 401 Unauthorized
 Server: nginx/1.10.3
 Date: Tue, 28 Nov 2017 05:35:18 GMT
@@ -202,7 +202,7 @@ Unauthorized: You didn't provide the authentication token
 If you don't have permission to access the location (only in sso mode, if you're testing with no-sso return code will be 401):
 
 ```bash
-$ curl -s -i -X GET --header 'x-sso-token: 100-token' 'http://127.0.0.1:8888/permission-sso/'
+$ curl -s -i -X GET --header 'Authorization: Bearer 100-token' 'http://127.0.0.1:8888/permission-sso/'
 HTTP/1.1 403 Forbidden
 Server: nginx/1.10.3
 Date: Tue, 28 Nov 2017 05:36:01 GMT
@@ -213,10 +213,10 @@ Connection: keep-alive
 Forbidden: You don't have permissions to access that resource
 ```
 
-* Provide the access token has a login/password, login should by `token_name` (default: x-sso-token) and password the access token (you can also invert user and password, if you do so the token will be log in your server log has the username)
+* Provide the access token has a login/password, the access token is sent as the username:
 
 ```bash
-$ curl -s -i -X GET 'http://x-sso-token:100-token@127.0.0.1:8888/user/'
+$ curl -s -i -X GET 'http://100-token:@127.0.0.1:8888/user/'
 HTTP/1.1 200 OK
 Server: nginx/1.10.3
 Date: Tue, 28 Nov 2017 05:39:52 GMT
@@ -298,10 +298,10 @@ You'll find in the `example/httpd/` directory a more [advanced configuration](ex
 
 You can also do authentication with cli tool, like `wget` or `curl`, in that case you can use following method:
 
-* Provide the access token has a login/password, login should by `token_name` (default: x-sso-token) and password the access token (you can also invert user and password, if you do so the token will be log in your server log has the username)
+* Provide the access token has a login/password, the access token is sent as the username:
 
 ```bash
-$ curl -s -i -X GET 'http://x-sso-token:100-token@127.0.0.1:8889/user/'
+$ curl -s -i -X GET 'http://100-token:@127.0.0.1:8889/user/'
 HTTP/1.1 200 OK
 Date: Tue, 28 Nov 2017 05:44:46 GMT
 Server: Apache/2.4.25 (Debian)
@@ -334,7 +334,7 @@ Content-Type: text/html
 With an invalid token:
 
 ```bash
-$ curl -s -i -X GET --header 'x-sso-token: bad-token' 'http://127.0.0.1:8889/user/'
+$ curl -s -i -X GET 'http://bad-token:127.0.0.1:8889/user/'
 HTTP/1.1 401 Unauthorized
 Date: Tue, 28 Nov 2017 05:45:27 GMT
 Server: Apache/2.4.25 (Debian)
