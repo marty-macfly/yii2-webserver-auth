@@ -18,12 +18,12 @@ class AuthController extends \yii\rest\Controller
         $behaviors['authenticator'] = [
             'class' => CompositeAuth::className(),
             'authMethods' => [
-                HttpBasicAuth::className(),
-                HttpBearerAuth::className(),
                 'cookieAuth' => [
                     'class' => CookieAuth::className(),
                     'cookieName' => $this->module->token_name,
                 ],
+                HttpBearerAuth::className(),
+                HttpBasicAuth::className(),
             ],
         ];
         return $behaviors;
