@@ -1,6 +1,6 @@
 {
     "name": "macfly/yii2-webserver-auth",
-    "description": "Module for Yii framwork to enable Nginx authentification",
+    "description": "Module for Yii framwork to provide Nginx and Httpd authentication",
     "type": "yii2-extension",
     "keywords": ["yii2", "nginx", "apache", "httpd", "htaccess", "ngx_http_auth_request_module", "mod_authnz_external"],
     "homepage": "https://github.com/marty-macfly/yii2-webserver-auth",
