@@ -42,17 +42,19 @@ class AuthController extends \yii\rest\Controller
                 ) {
                 $permissions = is_array($permissions) ? $permissions : [$permissions];
                 foreach ($permissions as $permission) {
+                    Yii::info(sprintf("Check if user has permission: %s", $permission));
                     if ($user->can($permission)) {
+                        Yii::info(sprintf("User has permission: %s", $permission));
                         return Yii::$app->response->statusCode = 200;
                     }
                 }
-                throw new \yii\web\ForbiddenHttpException;
+                throw new \yii\web\ForbiddenHttpException();
             } else {
                 return Yii::$app->response->statusCode = 200;
             }
         }
 
         // User is not valid
-        throw new \yii\web\UnauthorizedHttpException;
+        throw new \yii\web\UnauthorizedHttpException();
     }
 }
